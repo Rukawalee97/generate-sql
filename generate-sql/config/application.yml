@@ -1,0 +1,44 @@
+# Spring 配置
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/generate_sql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 3
+      max-active: 20
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.rukawa.gernerate.sql.domain
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+# 日志配置
+logging:
+  level:
+    com:
+      rukawa:
+        gernerate:
+          sql:
+            mapper: debug
+
+# 图片配置
+image:
+  location: file:images/
+
+# 系统配置
+system:
+  expire: 1800
+
+# 默认用户信息
+user:
+  userHead: /images/user.png
+  roleId: 1
