@@ -30,7 +30,8 @@ router.beforeEach((to, from, next) => {
           .dispatch('GetInfo')
           .then(res => {
             console.log('res', res)
-            const roles = res.result && res.result.role
+            // const roles = res.result && res.result.role
+            const roles = { 'roleId': 'admin' }
             // generate dynamic router
             store.dispatch('GenerateRoutes', { roles }).then(() => {
               // 根据roles权限生成可访问的路由表

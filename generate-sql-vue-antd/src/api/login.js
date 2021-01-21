@@ -15,8 +15,7 @@ const userApi = {
  * parameter: {
  *     username: '',
  *     password: '',
- *     remember_me: true,
- *     captcha: '12345'
+ *     remember_me: true
  * }
  * @param parameter
  * @returns {*}
@@ -32,10 +31,7 @@ export function login (parameter) {
 export function getInfo () {
   return request({
     url: userApi.UserInfo,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'get'
   })
 }
 
@@ -49,9 +45,6 @@ export function getCurrentUserNav () {
 export function logout () {
   return request({
     url: userApi.Logout,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'post'
   })
 }
