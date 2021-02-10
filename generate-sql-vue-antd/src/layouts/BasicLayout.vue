@@ -9,24 +9,11 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-
-    <!-- 1.0.0+ 版本 pro-layout 提供 API，
-          我们推荐使用这种方式进行 LOGO 和 title 自定义
-    -->
+    <ads v-if="isProPreviewSite && !collapsed"/>
     <template v-slot:menuHeaderRender>
       <div>
         <logo-svg />
         <h1>{{ title }}</h1>
-      </div>
-    </template>
-    <!-- 1.0.0+ 版本 pro-layout 提供 API,
-          增加 Header 左侧内容区自定义
-    -->
-    <template v-slot:headerContentRender>
-      <div>
-        <a-tooltip title="刷新页面">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="() => { $message.info('只是一个DEMO') }" />
-        </a-tooltip>
       </div>
     </template>
 
@@ -53,10 +40,10 @@ import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
+import { asyncRouterMap } from '@/config/router.config.js'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
-import Ads from '@/components/Other/CarbonAds'
-import LogoSvg from '../assets/logo.svg?inline'
+import LogoSvg from '../assets/sql.svg?inline'
 
 export default {
   name: 'BasicLayout',
@@ -64,8 +51,7 @@ export default {
     SettingDrawer,
     RightContent,
     GlobalFooter,
-    LogoSvg,
-    Ads
+    LogoSvg
   },
   data () {
     return {
@@ -108,7 +94,8 @@ export default {
     })
   },
   created () {
-    const routes = this.mainMenu.find(item => item.path === '/')
+    const routes = asyncRouterMap.find((item) => item.path === '/')
+    // const routes = this.mainMenu.find(item => item.path === '/')
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {

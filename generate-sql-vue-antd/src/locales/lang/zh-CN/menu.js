@@ -31,9 +31,15 @@ export default {
     'menu.exception.not-find': '404',
     'menu.exception.server-error': '500',
     'menu.exception.trigger': '触发错误',
-    'menu.account': '个人页',
+    'menu.account': '个人信息',
     'menu.account.center': '个人中心',
     'menu.account.settings': '个人设置',
     'menu.account.trigger': '触发报错',
-    'menu.account.logout': '退出登录'
+    'menu.account.logout': '退出登录',
+    'menu.study': '学习中心',
+    'menu.generate': '快速SQL',
+    'menu.manage': '管理中心',
+    'menu.manage.role': '角色管理',
+    'menu.manage.mysql': 'MySQL管理',
+    'menu.manage.mybatis': 'MyBatis管理'
 }

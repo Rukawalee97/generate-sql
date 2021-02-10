@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class UserService {
@@ -43,6 +45,10 @@ public class UserService {
 
     public int countByUsername(String username) {
         return userMapper.countByUsername(username);
+    }
+
+    public List<User> queryUsers() {
+        return userMapper.selectUsers(null);
     }
 
 }

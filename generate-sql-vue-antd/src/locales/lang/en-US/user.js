@@ -1,7 +1,10 @@
 export default {
+  'user.signIn': 'Sign In',
+  'user.signUp': 'Sign Up',
+  'user.backToLogin': 'Back To Sign In',
   'user.login.userName': 'userName',
   'user.login.password': 'password',
-  'user.login.username.placeholder': 'please enter username',
+  'user.login.username.placeholder': 'please enter user name',
   'user.login.password.placeholder': 'please enter user password',
   'user.login.message-invalid-credentials':
     'Invalid username or password',
@@ -11,20 +14,20 @@ export default {
   'user.login.signup': 'Sign up',
   'user.login.login': 'Login',
   'user.register.register': 'Register',
-  'user.register.email.placeholder': 'Email',
-  'user.register.password.placeholder': 'Password ',
-  'user.register.password.popover-message': 'Please enter at least 6 characters. Please do not use passwords that are easy to guess. ',
-  'user.register.confirm-password.placeholder': 'Confirm password',
+  'user.register.register.btn': 'Register',
+  'user.register.userName.placeholder': 'please enter user name',
+  'user.register.password.placeholder': 'please enter user password more than 6 characters',
+  'user.register.password.popover-message': 'please enter user password more than 6 characters',
+  'user.register.confirm-password.placeholder': 'please enter confirm password',
   'user.register.sign-in': 'Already have an account?',
-  'user.register-result.msg': 'Account：registered at {email}',
-  'user.register-result.activation-email':
-    'The activation email has been sent to your email address and is valid for 24 hours. Please log in to the email in time and click on the link in the email to activate the account.',
+  'user.register-result.msg': 'Account：registered at ',
+  'user.register-result.success': '',
+  'user.register-result.activation': 'Welcome to join Generate SQL Learning Platform. Please back the home page and log in your account.',
   'user.register-result.back-home': 'Back to home',
-  'user.register-result.view-mailbox': 'View mailbox',
-  'user.email.required': 'Please enter your email!',
-  'user.email.wrong-format': 'The email address is in the wrong format!',
   'user.userName.required': 'Please enter account name or email address',
+  'user.userName.length': 'Please enter more than 3 characters',
   'user.password.required': 'Please enter your password!',
+  'user.password.length': 'Please enter more than 6 characters',
   'user.password.twice.msg': 'The passwords entered twice do not match!',
   'user.password.strength.msg':
     'The password is not strong enough',
@@ -32,8 +35,5 @@ export default {
   'user.password.strength.medium': 'Strength: medium',
   'user.password.strength.low': 'Strength: low',
   'user.password.strength.short': 'Strength: too short',
-  'user.confirm-password.required': 'Please confirm your password!',
-  'user.phone-number.required': 'Please enter your phone number!',
-  'user.phone-number.wrong-format': 'Please enter a valid phone number',
-  'user.verification-code.required': 'Please enter the verification code!'
+  'user.confirm-password.required': 'Please confirm your password!'
 }

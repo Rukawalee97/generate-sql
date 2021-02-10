@@ -2,8 +2,11 @@ package com.rukawa.generate.sql.controller;
 
 import com.rukawa.common.util.BeanUtil;
 import com.rukawa.common.util.StringUtil;
+import com.rukawa.generate.sql.domain.Role;
 import com.rukawa.generate.sql.domain.User;
 import com.rukawa.generate.sql.dto.Result;
+import com.rukawa.generate.sql.dto.UserDto;
+import com.rukawa.generate.sql.service.RoleService;
 import com.rukawa.generate.sql.service.TokenCacheService;
 import com.rukawa.generate.sql.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private TokenCacheService tokenCacheService;
@@ -72,8 +80,21 @@ public class UserController {
     @PutMapping("/update")
     public Result update(@RequestBody User user, @RequestHeader("Access-Token") String accessToken) {
         Result result = null;
+        Optional<User> userOptional = tokenCacheService.getUserByToken(accessToken);
+        if (!userOptional.isPresent()) {
+            result = Result.fail(false);
+            result.setMessage("当前用户未登录！");
+            return result;
+        }
+        User userCache = userOptional.get();
+        if (!StringUtil.isEmpty(user.getOldPassword()) && !userCache.getPassword().equals(user.getOldPassword())) {
+            result = Result.fail(false);
+            result.setMessage("旧密码不正确！");
+            return result;
+        }
+        user.setUserId(userCache.getUserId());
         int update = userService.update(user);
-        if(update > 0) {
+        if (update > 0) {
             tokenCacheService.updateToken(accessToken, user, expireTime);
             result = Result.success(update > 0);
             result.setMessage("更新用户信息成功！");
@@ -100,4 +121,27 @@ public class UserController {
         result = Result.fail(false);
         return result;
     }
+
+    @GetMapping("/manages")
+    public Result manageUserRole() {
+        List<Role> roles = roleService.queryRoles();
+        List<User> users = userService.queryUsers();
+        List<UserDto> userDtoList = users.parallelStream()
+                .map(user -> {
+                    UserDto userDto = new UserDto();
+                    Optional<Role> roleOptional = roles.parallelStream()
+                            .filter(role -> !BeanUtil.isEmpty(role.getRoleId()) && role.getRoleId().equals(user.getRoleId()))
+                            .findFirst();
+                    if (roleOptional.isPresent()) {
+                        Role role = roleOptional.get();
+                        userDto.setRoleName(role.getRoleName());
+                        userDto.setRoleId(role.getRoleId());
+                    }
+                    userDto.setUsername(user.getUsername());
+                    userDto.setUserId(user.getUserId());
+                    return userDto;
+                }).collect(Collectors.toList());
+        return Result.success(userDtoList);
+    }
+
 }

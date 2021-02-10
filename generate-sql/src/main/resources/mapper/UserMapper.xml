@@ -32,6 +32,21 @@
         AND password = #{password}
     </select>
 
+    <select id="selectUsers" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM tb_user
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+            <if test="username != null">AND username = #{username}</if>
+            <if test="userHead != null">AND user_head = #{userHead}</if>
+            <if test="userIntroduction != null">AND user_introduction = #{userIntroduction}</if>
+            <if test="password != null">AND password = #{password}</if>
+            <if test="roleId != null">AND role_id = #{roleId}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+        </where>
+    </select>
+
     <select id="countByUsername" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM tb_user

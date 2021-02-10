@@ -9,7 +9,7 @@
         <div class="top">
           <div class="header">
             <a href="/">
-              <img src="~@/assets/logo.svg" class="logo" alt="logo">
+              <img src="~@/assets/sql.svg" class="logo" alt="logo">
               <span class="title">Generate SQL</span>
             </a>
           </div>
@@ -22,7 +22,7 @@
 
         <div class="footer">
           <div class="copyright">
-            Copyright &copy; 2020 Rukawalee
+            Copyright &copy; 2021 Rukawa Lee
           </div>
         </div>
       </div>

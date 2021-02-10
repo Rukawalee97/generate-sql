@@ -31,9 +31,15 @@ export default {
     'menu.exception.not-find': '404',
     'menu.exception.server-error': '500',
     'menu.exception.trigger': 'Trigger',
-    'menu.account': 'Account',
+    'menu.account': 'My Account',
     'menu.account.center': 'Account Center',
     'menu.account.settings': 'Account Settings',
     'menu.account.trigger': 'Trigger Error',
-    'menu.account.logout': 'Logout'
+    'menu.account.logout': 'Logout',
+    'menu.study': 'Study Center',
+    'menu.generate': 'Faster SQL',
+    'menu.manage': 'Manage Center',
+    'menu.manage.role': 'Role Manage',
+    'menu.manage.mysql': 'MySQL Manage',
+    'menu.manage.mybatis': 'MyBatis Manage'
 }

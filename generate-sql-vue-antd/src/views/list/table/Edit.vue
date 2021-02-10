@@ -118,9 +118,6 @@ export default {
       id: 0
     }
   },
-  // beforeCreate () {
-  //   this.form = this.$form.createForm(this)
-  // },
   mounted () {
     this.$nextTick(() => {
       this.loadEditInfo(this.record)

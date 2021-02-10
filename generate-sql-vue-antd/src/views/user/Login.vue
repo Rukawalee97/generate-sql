@@ -10,6 +10,7 @@
       <a-tabs
         activeKey="tab1"
         :tabBarStyle="{ textAlign: 'left', borderBottom: 'unset' }"
+        @change="handleTabClick"
       >
         <a-tab-pane key="tab1" :tab="$t('user.login.tab-login-credentials')">
           <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" :message="$t('user.login.message-invalid-credentials')" />
@@ -59,7 +60,9 @@
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >{{ $t('user.login.login') }}</a-button>
+        >
+          {{ $t('user.login.login') }}
+        </a-button>
       </a-form-item>
 
       <div class="user-login-other">
@@ -70,22 +73,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { timeFix } from '@/utils/util'
+import { mapActions, mapGetters } from 'vuex'
+import { isEmpty, timeFix } from '@/utils/util'
+import { message } from 'ant-design-vue'
 
 export default {
+  components: {
+  },
+  computed: {
+    ...mapGetters(['token'])
+  },
   data () {
     return {
       loginBtn: false,
       isLoginError: false,
-      stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
-        time: 60,
-        loginBtn: false,
-        smsSendBtn: false
+        loginBtn: false
       }
     }
+  },
+  mounted () {
+    this.isLoged()
   },
   methods: {
     ...mapActions(['Login', 'Logout']),
@@ -103,11 +112,7 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
           const loginParams = { ...values }
-          delete loginParams.username
-          loginParams.username = values.username
-          loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -122,24 +127,33 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
-      this.$router.push({ path: '/' })
-      // 延迟 1 秒显示欢迎信息
-      setTimeout(() => {
-        this.$notification.success({
-          message: '欢迎',
-          description: `${timeFix()}，欢迎回来`
-        })
-      }, 1000)
-      this.isLoginError = false
+      if (res.result) {
+        this.$router.push({ path: '/' })
+        // 延迟 1 秒显示欢迎信息
+        setTimeout(() => {
+          this.$notification.success({
+            message: `${res.result.username}`,
+            description: `${timeFix()}，欢迎您回来！`
+          })
+        }, 1000)
+        this.isLoginError = false
+      } else {
+        this.requestFailed(res)
+      }
     },
     requestFailed (err) {
       this.isLoginError = true
       this.$notification['error']({
-        message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        message: '发生错误',
+        description: err.message || ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
         duration: 4
       })
+    },
+    isLoged () {
+      if (!isEmpty(this.token)) {
+        message.info('您已经登录！')
+        this.$router.push({ path: '/' })
+      }
     }
   }
 }

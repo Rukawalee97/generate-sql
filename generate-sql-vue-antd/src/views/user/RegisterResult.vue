@@ -2,31 +2,36 @@
   <a-result
     :isSuccess="true"
     :content="false"
-    :title="email"
-    :sub-title="description">
+    :title="$t('user.register-result.msg') + username + $t('user.register-result.success')"
+    :sub-title="$t('user.register-result.activation')">
 
     <template #extra>
-      <a-button size="large" type="primary">查看邮箱</a-button>
-      <a-button size="large" style="margin-left: 8px" @click="goHomeHandle">返回首页</a-button>
+      <a-button size="large" style="margin-left: 8px" @click="goHomeHandle">
+        {{ $t('user.backToLogin') }}
+      </a-button>
     </template>
 
   </a-result>
 </template>
 
 <script>
+import { isEmpty } from '@/utils/util'
+import { mapGetters } from 'vuex'
+import { message } from 'ant-design-vue'
+
 export default {
   name: 'RegisterResult',
   data () {
     return {
-      description: '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
       form: {}
     }
   },
   computed: {
-    email () {
-      const v = this.form && this.form.email || 'xxx'
-      return `你的账户：${v} 注册成功`
-    }
+    username () {
+      const v = this.form && this.form.username || 'xxx'
+      return v
+    },
+    ...mapGetters(['token'])
   },
   created () {
     this.form = this.$route.params
@@ -34,6 +39,12 @@ export default {
   methods: {
     goHomeHandle () {
       this.$router.push({ name: 'login' })
+    },
+    isLoged () {
+      if (isEmpty(this.token)) {
+        message.info('您已经登录！')
+        this.$router.push({ path: '/' })
+      }
     }
   }
 }

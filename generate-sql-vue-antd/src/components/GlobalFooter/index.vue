@@ -1,8 +1,6 @@
 <template>
   <global-footer class="footer custom-render">
-    <template v-slot:links>
-      Generate SQL @Rukawalee
-    </template>
+    Copyright © 2021 Rukawa Lee
   </global-footer>
 </template>
 

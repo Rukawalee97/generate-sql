@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.rukawa</groupId>
+  <artifactId>CommonUtil</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20210116.063140</timestamp>
+      <buildNumber>4</buildNumber>
+    </snapshot>
+    <lastUpdated>20210116063140</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.0-20210116.063140-4</value>
+        <updated>20210116063140</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0-20210116.063140-4</value>
+        <updated>20210116063140</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

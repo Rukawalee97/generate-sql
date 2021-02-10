@@ -8,74 +8,74 @@
               <img :src="avatar">
             </div>
             <div class="username">{{ nickname }}</div>
-            <div class="bio">海纳百川，有容乃大</div>
+            <div class="bio">{{ userIntroduction }}</div>
           </div>
-          <div class="account-center-detail">
-            <p>
-              <i class="title"></i>交互专家
-            </p>
-            <p>
-              <i class="group"></i>蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED
-            </p>
-            <p>
-              <i class="address"></i>
-              <span>浙江省</span>
-              <span>杭州市</span>
-            </p>
-          </div>
-          <a-divider/>
-
-          <div class="account-center-tags">
-            <div class="tagsTitle">标签</div>
-            <div>
-              <template v-for="(tag, index) in tags">
-                <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                  <a-tag
-                    :key="tag"
-                    :closable="index !== 0"
-                    :close="() => handleTagClose(tag)"
-                  >{{ `${tag.slice(0, 20)}...` }}</a-tag>
-                </a-tooltip>
-                <a-tag
-                  v-else
-                  :key="tag"
-                  :closable="index !== 0"
-                  :close="() => handleTagClose(tag)"
-                >{{ tag }}</a-tag>
-              </template>
-              <a-input
-                v-if="tagInputVisible"
-                ref="tagInput"
-                type="text"
-                size="small"
-                :style="{ width: '78px' }"
-                :value="tagInputValue"
-                @change="handleInputChange"
-                @blur="handleTagInputConfirm"
-                @keyup.enter="handleTagInputConfirm"
-              />
-              <a-tag v-else @click="showTagInput" style="background: #fff; borderStyle: dashed;">
-                <a-icon type="plus"/>New Tag
-              </a-tag>
-            </div>
-          </div>
-          <a-divider :dashed="true"/>
-
-          <div class="account-center-team">
-            <div class="teamTitle">团队</div>
-            <a-spin :spinning="teamSpinning">
-              <div class="members">
-                <a-row>
-                  <a-col :span="12" v-for="(item, index) in teams" :key="index">
-                    <a>
-                      <a-avatar size="small" :src="item.avatar"/>
-                      <span class="member">{{ item.name }}</span>
-                    </a>
-                  </a-col>
-                </a-row>
+          <a-tabs
+            size="small"
+          >
+            <a-tab-pane
+              key="tab_team"
+              tab="技术团队"
+            >
+              <div class="account-center-detail">
+                <p>
+                  <i class="title"></i> 周艳明
+                </p>
+                <p>
+                  <i class="address"></i> 重庆市 沙坪坝区
+                </p>
+                <p>
+                  <i class="group"></i> 重庆师范大学 2017 计算机科学与技术
+                </p>
               </div>
-            </a-spin>
-          </div>
+            </a-tab-pane>
+          </a-tabs>
+          <a-tabs
+            size="small"
+          >
+            <a-tab-pane
+              key="tab_tag"
+              tab="技术标记"
+            >
+              <div class="account-center-tags">
+                <template v-for="(tag, index) in tags">
+                  <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
+                    <a-tag
+                      :key="tag"
+                    >
+                      {{ `${tag.slice(0, 20)}...` }}
+                    </a-tag>
+                  </a-tooltip>
+                  <a-tag
+                    v-else
+                    :key="tag"
+                    :color="colors[index]"
+                  >
+                    {{ tag }}
+                  </a-tag>
+                </template>
+              </div>
+            </a-tab-pane>
+          </a-tabs>
+          <a-tabs>
+            <a-tab-pane
+              key="tab_technology"
+              tab="技术支持"
+            >
+              <div class="account-center-team">
+                <div class="members">
+                  <a-row>
+                    <a-col :span="12" v-for="(item, index) in teams" :key="index">
+                      <a :href="item.link" target="_blank">
+                        <a-avatar size="small" :src="item.avatar"/>
+                        <span class="member">{{ item.name }}</span>
+                      </a>
+                    </a-col>
+                  </a-row>
+                </div>
+              </div>
+            </a-tab-pane>
+          </a-tabs>
         </a-card>
       </a-col>
       <a-col :md="24" :lg="17">
@@ -98,8 +98,12 @@
 <script>
 import { PageView, RouteView } from '@/layouts'
 import { AppPage, ArticlePage, ProjectPage } from './page'
-
 import { mapGetters } from 'vuex'
+import { isEmpty } from '@/utils/util'
+import { message } from 'ant-design-vue'
+import mybatis from '@/assets/mybatis.png'
+import springboot from '@/assets/springboot.png'
+import java from '@/assets/java.png'
 
 export default {
   components: {
@@ -111,14 +115,25 @@ export default {
   },
   data () {
     return {
-      tags: ['很有想法的', '专注设计', '辣~', '大长腿', '川妹子', '海纳百川'],
-
-      tagInputVisible: false,
-      tagInputValue: '',
-
-      teams: [],
-      teamSpinning: true,
-
+      tags: ['Java', 'MySQL', 'Vue', 'Antd'],
+      colors: ['#e16512', '#005a85', '#3fbc88', '#40a9ff'],
+      teams: [
+        {
+          link: 'https://github.com/Rukawalee/SQLBuilder',
+          avatar: java,
+          name: 'SQLBuilder'
+        },
+        {
+          link: 'https://spring.io/projects/spring-boot',
+          avatar: springboot,
+          name: 'SpringBoot'
+        },
+        {
+          link: 'https://mybatis.org/mybatis-3/',
+          avatar: mybatis,
+          name: 'MyBatis'
+        }
+      ],
       tabListNoTitle: [
         {
           key: 'article',
@@ -137,19 +152,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['nickname', 'avatar'])
+    ...mapGetters(['nickname', 'avatar', 'token', 'userIntroduction'])
   },
   mounted () {
-    this.getTeams()
+    this.isLoged()
   },
   methods: {
-    getTeams () {
-      this.$http.get('/workplace/teams').then(res => {
-        this.teams = res.result
-        this.teamSpinning = false
-      })
-    },
-
     handleTabChange (key, type) {
       this[type] = key
     },
@@ -158,30 +166,11 @@ export default {
       const tags = this.tags.filter(tag => tag !== removeTag)
       this.tags = tags
     },
-
-    showTagInput () {
-      this.tagInputVisible = true
-      this.$nextTick(() => {
-        this.$refs.tagInput.focus()
-      })
-    },
-
-    handleInputChange (e) {
-      this.tagInputValue = e.target.value
-    },
-
-    handleTagInputConfirm () {
-      const inputValue = this.tagInputValue
-      let tags = this.tags
-      if (inputValue && !tags.includes(inputValue)) {
-        tags = [...tags, inputValue]
+    isLoged () {
+      if (isEmpty(this.token)) {
+        message.warning('您还没有登录！')
+        this.$router.push({ path: '/' })
       }
-
-      Object.assign(this, {
-        tags,
-        tagInputVisible: false,
-        tagInputValue: ''
-      })
     }
   }
 }

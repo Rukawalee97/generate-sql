@@ -10,9 +10,10 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
+const allowList = ['login', 'register', 'registerResult', 'dashboard', 'form'] // no redirect allowList
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/workplace'
+// const defaultRoutePath = '/index'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -29,11 +30,8 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetInfo')
           .then(res => {
-            console.log('res', res)
-            // const roles = res.result && res.result.role
-            const roles = { 'roleId': 'admin' }
             // generate dynamic router
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            store.dispatch('GenerateRoutes').then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
