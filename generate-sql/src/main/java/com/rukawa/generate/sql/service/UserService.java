@@ -43,6 +43,10 @@ public class UserService {
         return userMapper.updateUserByPrimary(user);
     }
 
+    public int delete(Integer userId) {
+        return userMapper.deleteUserByPrimary(userId);
+    }
+
     public int countByUsername(String username) {
         return userMapper.countByUsername(username);
     }

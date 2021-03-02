@@ -9,7 +9,8 @@ const userApi = {
   UserInfo: '/api/user/info',
   Update: '/api/user/update',
   UploadFile: '/api/file/upload',
-  Manages: '/api/user/manages'
+  Manages: '/api/user/manages',
+  Delete: '/api/user'
 }
 
 /**
@@ -67,4 +68,10 @@ export function uploadFile (params) {
 
 export function getManages () {
   return request(userApi.Manages)
+}
+
+export function deleteUser (param) {
+  return request(userApi.Delete.concat('/').concat(param), {
+    method: 'DELETE'
+  })
 }

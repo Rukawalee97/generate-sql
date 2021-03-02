@@ -39,50 +39,68 @@
           更新
         </a-button>
         <a-divider type="vertical" />
-        <a-button
-          shape="round"
-          type="danger"
-          size="small"
-          @click="() => deleteRoleManage(record)"
-          ghost
+        <a-popconfirm
+          cancelText="取消"
+          okText="确认"
+          :title="'确认删除 ['.concat(record.username).concat(']?')"
+          @confirm="() => deleteRoleManage(record)"
         >
-          删除
-        </a-button>
+          <a-button
+            shape="round"
+            type="danger"
+            size="small"
+            ghost
+          >
+            删除
+          </a-button>
+        </a-popconfirm>
       </span>
     </a-table>
   </a-card>
 </template>>
 
 <script>
+import { message } from 'ant-design-vue'
   import { mapActions, mapGetters } from 'vuex'
+import { isEmpty } from '@/utils/util'
 
   export default {
     computed: {
       ...mapGetters([
         'roleManages',
-        'roles'
+        'roles',
+        'token',
+        'role'
       ])
     },
     methods: {
       ...mapActions([
         'GetManages',
         'GetRoles',
-        'UpdateUserInfo'
+        'UpdateUserInfo',
+        'DeleteUser'
       ]),
       updateRoleManage (roleManage) {
         this.UpdateUserInfo(roleManage)
           .then(res => {
             if (!res.result) {
               this.requestFailed(res)
+            } else {
+              message.success('更新用户 ['.concat(roleManage.username).concat('] 成功!'))
             }
           })
           .catch(err => this.requestFailed(err))
-          // .finally(() => {
-          //   state.loginBtn = false
-          // })
       },
       deleteRoleManage (roleManage) {
-        console.log(roleManage)
+        this.DeleteUser(roleManage.userId)
+          .then(res => {
+            if (!res.result) {
+              this.requestFailed(res)
+            } else {
+              message.success(`删除[${roleManage.username}]成功！`)
+              this.GetManages()
+            }
+          })
       },
       selectRole (roleName, option, roleManage) {
         const relRole = this.roleManages.find(role => role.userId === roleManage.userId)
@@ -100,11 +118,29 @@
           description: err.message || ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
           duration: 4
         })
+      },
+      isLoged () {
+        if (isEmpty(this.token)) {
+          message.warning('您还没有登录！')
+          this.$router.push({ path: '/' })
+        }
+      },
+      isAdmin () {
+        const {
+          role,
+          roles
+        } = this
+        const relRole = roles.find(r => r.roleId === role)
+        if (relRole.roleName !== '管理员') {
+          message.warning('您没有访问权限！')
+          this.$router.push({ path: '/' })
+        }
       }
     },
     mounted () {
       this.GetManages()
-      this.GetRoles()
+      this.isLoged()
+      this.isAdmin()
     },
     data () {
       return {

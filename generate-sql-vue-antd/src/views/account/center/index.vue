@@ -1,7 +1,7 @@
 <template>
   <div class="page-header-index-wide page-header-wrapper-grid-content-main">
-    <a-row :gutter="24">
-      <a-col :md="24" :lg="7">
+    <a-row :gutter="[2, 2]">
+      <a-col :md="24" :lg="8" :xl="7">
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
             <div class="avatar">
@@ -78,7 +78,7 @@
           </a-tabs>
         </a-card>
       </a-col>
-      <a-col :md="24" :lg="17">
+      <a-col :md="24" :lg="16" :xl="17">
         <a-card
           style="width:100%"
           :bordered="false"

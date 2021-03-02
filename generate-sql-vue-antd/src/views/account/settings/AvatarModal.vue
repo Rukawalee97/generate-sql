@@ -83,8 +83,6 @@ export default {
       previews: {}
     }
   },
-  computed: {
-  },
   methods: {
     ...mapActions(['UploadFile']),
     edit (id) {

@@ -78,8 +78,6 @@ import { isEmpty, timeFix } from '@/utils/util'
 import { message } from 'ant-design-vue'
 
 export default {
-  components: {
-  },
   computed: {
     ...mapGetters(['token'])
   },

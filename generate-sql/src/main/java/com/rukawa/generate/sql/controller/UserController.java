@@ -115,7 +115,7 @@ public class UserController {
         Optional<User> userOptional = tokenCacheService.getUserByToken(accessToken);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            result = Result.success(BeanUtil.removeAttributes(user, "password", "userId", "createTime", "roleId"));
+            result = Result.success(BeanUtil.removeAttributes(user, "password", "userId", "createTime"));
             return result;
         }
         result = Result.fail(false);
@@ -144,4 +144,20 @@ public class UserController {
         return Result.success(userDtoList);
     }
 
+    @DeleteMapping("/{userId}")
+    public Result delUser(@PathVariable Integer userId, @RequestHeader("Access-Token") String accessToken) {
+        Optional<User> userOptional = tokenCacheService.getUserByToken(accessToken);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if(user.getUserId().equals(userId)) {
+                Result result = Result.fail(false);
+                result.setMessage("不能对当前账号进行操作！");
+                return result;
+            }
+        }
+        if (userService.delete(userId) > 0 && tokenCacheService.deleteToken(userId)) {
+            return Result.success(true);
+        }
+        return Result.fail(false);
+    }
 }

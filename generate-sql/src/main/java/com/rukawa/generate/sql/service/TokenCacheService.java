@@ -49,6 +49,18 @@ public class TokenCacheService {
         return true;
     }
 
+    public boolean deleteToken(Integer userId) {
+        Map<String, Token> tokenMap = tokenCache.getTokenMap();
+        Optional<Map.Entry<String, Token>> tokenMapOptional = tokenMap.entrySet().parallelStream()
+                .filter(entry -> entry.getValue().getUser().getUserId().equals(userId))
+                .findFirst();
+        if (tokenMapOptional.isPresent()) {
+            Map.Entry<String, Token> entry = tokenMapOptional.get();
+            return tokenMap.remove(entry.getKey(), entry.getValue());
+        }
+        return false;
+    }
+
     public Optional<User> getUserByToken(String token) {
         Map<String, Token> tokenMap = tokenCache.getTokenMap();
         Token tokenObj = tokenMap.get(token);

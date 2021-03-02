@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, register, getInfo, logout, updatePassword, uploadFile, getManages } from '@/api/login'
+import { login, register, getInfo, logout, updatePassword, uploadFile, getManages, deleteUser } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -7,6 +7,7 @@ const user = {
   state: {
     token: '',
     name: '',
+    role: '',
     welcome: '',
     userIntroduction: '',
     avatar: '',
@@ -27,6 +28,9 @@ const user = {
     },
     SET_INTRODUCTION: (state, introduction) => {
       state.userIntroduction = introduction
+    },
+    SET_ROLE: (state, role) => {
+      state.role = role
     },
     SET_INFO: (state, info) => {
       state.info = info
@@ -69,11 +73,11 @@ const user = {
         getInfo()
         .then(response => {
           const result = response.result
-          console.log(response)
           if (result) {
             commit('SET_NAME', { name: result.username, welcome: welcome() })
             commit('SET_AVATAR', result.userHead)
             commit('SET_INTRODUCTION', result.userIntroduction)
+            commit('SET_ROLE', result.roleId)
           } else {
             commit('SET_TOKEN', '')
             storage.remove(ACCESS_TOKEN)
@@ -128,6 +132,17 @@ const user = {
         getManages()
         .then(response => {
           commit('SET_ROLE_MANAGES', response.result)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    DeleteUser ({ commit }, userId) {
+      return new Promise((resolve, reject) => {
+        deleteUser(userId)
+        .then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

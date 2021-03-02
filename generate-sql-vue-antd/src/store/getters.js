@@ -12,7 +12,9 @@ const getters = {
   multiTab: state => state.app.multiTab,
   userIntroduction: state => state.user.userIntroduction,
   roleManages: state => state.user.roleManages,
-  roles: state => state.role.roles
+  roles: state => state.role.roles,
+  role: state => state.user.role,
+  skills: state => state.skill.skills
 }
 
 export default getters

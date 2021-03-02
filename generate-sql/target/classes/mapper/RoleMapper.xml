@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rukawa.generate.sql.mapper.RoleMapper">
+
+    <resultMap id="baseResultMap" type="com.rukawa.generate.sql.domain.Role">
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        role_id
+        , role_name, create_time
+    </sql>
+
+    <select id="selectRoleByPrimary" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM tb_role
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="selectRoles" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM tb_role
+        <where>
+            <if test="roleId != null">role_id = #{roleId}</if>
+            <if test="roleName != null">AND role_name = #{roleName}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <!--<select id="selectUserByUsernameWithPassword" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM tb_user
+        WHERE username = #{username}
+        AND password = #{password}
+    </select>
+
+    <select id="countByUsername" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM tb_user
+        WHERE username = #{username}
+    </select>
+
+    <insert id="insertUserSelective">
+        INSERT INTO
+        tb_user
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="userId != null">user_id</if>
+            <if test="username != null">, username</if>
+            <if test="userHead != null">, user_head</if>
+            <if test="userIntroduction != null">, user_introduction</if>
+            <if test="password != null">, password</if>
+            <if test="roleId != null">, role_id</if>
+            <if test="createTime != null">, create_time</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="userId != null">#{userId}</if>
+            <if test="username != null">, #{username}</if>
+            <if test="userHead != null">, #{userHead}</if>
+            <if test="userIntroduction != null">, #{userIntroduction}</if>
+            <if test="password != null">, #{password}</if>
+            <if test="roleId != null">, #{roleId}</if>
+            <if test="createTime != null">, #{createTime}</if>
+        </trim>
+    </insert>-->
+
+    <update id="updateRoleByPrimaryKey">
+        UPDATE tb_role
+        <set>
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </set>
+        WHERE role_id = #{roleId}
+    </update>
+
+</mapper>

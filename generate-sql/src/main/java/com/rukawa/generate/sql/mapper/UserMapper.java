@@ -19,4 +19,6 @@ public interface UserMapper {
     int insertUserSelective(User user);
 
     int updateUserByPrimary(User user);
+
+    int deleteUserByPrimary(Integer userId);
 }

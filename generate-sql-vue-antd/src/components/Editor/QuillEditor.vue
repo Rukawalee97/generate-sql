@@ -34,6 +34,10 @@ export default {
     // eslint-disable-next-line
     value: {
       type: String
+    },
+    editorPlaceholder: {
+      type: String,
+      default: 'Input text hear...'
     }
   },
   data () {
@@ -41,21 +45,33 @@ export default {
       content: null,
       editorOption: {
         // some quill options
+        modules: {
+          toolbar: [
+            [{ 'size': [] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block', { 'script': 'sub' }, { 'script': 'super' }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['link', 'image']
+          ]
+        },
+        placeholder: this.editorPlaceholder,
+        theme: 'snow'
       }
     }
   },
   methods: {
     onEditorBlur (quill) {
-      console.log('editor blur!', quill)
+      // console.log('editor blur!', quill)
     },
     onEditorFocus (quill) {
-      console.log('editor focus!', quill)
+      // console.log('editor focus!', quill)
     },
     onEditorReady (quill) {
-      console.log('editor ready!', quill)
+      // console.log('editor ready!', quill)
     },
     onEditorChange ({ quill, html, text }) {
-      console.log('editor change!', quill, html, text)
+      // console.log('editor change!', quill, html, text)
       this.$emit('change', html)
     }
   },
@@ -78,6 +94,9 @@ export default {
   }
   /deep/ .ql-container.ql-snow {
     border-radius: 0 0 @border-radius-base @border-radius-base;
+  }
+  /deep/ .ql-editor {
+    height: 360px;
   }
 }
 </style>

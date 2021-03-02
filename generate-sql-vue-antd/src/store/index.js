@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import app from './modules/app'
 import user from './modules/user'
 import role from './modules/role'
+import skill from './modules/skill'
 
 // default router permission control
 import permission from './modules/permission'
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     app,
     user,
     role,
+    skill,
     permission
   },
   state: {

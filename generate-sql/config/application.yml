@@ -24,11 +24,7 @@ mybatis:
 # 日志配置
 logging:
   level:
-    com:
-      rukawa:
-        gernerate:
-          sql:
-            mapper: debug
+    com.rukawa.gernerate.sql.mapper: debug
 
 # 图片配置
 image:
