@@ -36,7 +36,7 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'AvatarDropdown',
@@ -46,18 +46,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['nickname', 'avatar', 'token', 'role', 'roles'])
+    ...mapGetters(['nickname', 'avatar', 'token'])
   },
   mounted () {
-    if (this.token) {
-      this.GetInfo()
-      .then(() => this.GetRoles()
-      .then(() => this.changeMenuBar()))
-      this.changeMenu()
-    }
+    this.changeMenu()
   },
   methods: {
-    ...mapActions(['GetRoles', 'GetInfo']),
     handleToCenter () {
       this.$router.push({ path: '/account/center' })
     },
@@ -82,20 +76,6 @@ export default {
     },
     changeMenu () {
       this.isShowLogedMenu = this.token !== undefined && this.token !== ''
-    },
-    changeMenuBar () {
-      if (this.isAdmin()) {
-        console.log('管理员登陆')
-        this.$store.dispatch('ToggleLayoutMode', 'sidemenu')
-      }
-    },
-    isAdmin () {
-      const {
-        role,
-        roles
-      } = this
-      const relRole = roles.find(r => r.roleId === role)
-      return relRole.roleName === '管理员'
     }
   }
 }

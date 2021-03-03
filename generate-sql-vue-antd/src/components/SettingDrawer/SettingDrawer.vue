@@ -238,6 +238,7 @@ export default {
       })
     },
     handleLayout (mode) {
+      console.log(this.$store)
       this.$store.dispatch('ToggleLayoutMode', mode)
       // 因为顶部菜单不能固定左侧菜单栏，所以强制关闭
       this.handleFixSiderbar(false)

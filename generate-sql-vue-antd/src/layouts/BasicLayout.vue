@@ -17,7 +17,7 @@
       </div>
     </template>
 
-    <setting-drawer :settings="settings" @change="handleSettingChange">
+    <setting-drawer :settings="settings" @change="handleSettingChange" style="display: none">
       <div style="margin: 12px 0;">
         This is SettingDrawer custom footer content.
       </div>
@@ -36,7 +36,7 @@
 <script>
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { i18nRender } from '@/locales'
-import { mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
@@ -91,7 +91,8 @@ export default {
     ...mapState({
       // 动态主路由
       mainMenu: state => state.permission.addRouters
-    })
+    }),
+    ...mapGetters(['token', 'role', 'roles'])
   },
   created () {
     const routes = asyncRouterMap.find((item) => item.path === '/')
@@ -121,8 +122,15 @@ export default {
     if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
       updateTheme(this.settings.primaryColor)
     }
+
+    if (this.token) {
+      this.GetInfo()
+      .then(() => this.GetRoles()
+      .then(() => this.changeMenuBar()))
+    }
   },
   methods: {
+    ...mapActions(['GetRoles', 'GetInfo']),
     i18nRender,
     handleMediaQuery (val) {
       this.query = val
@@ -156,6 +164,19 @@ export default {
           }
           break
       }
+    },
+    changeMenuBar () {
+      if (this.isAdmin()) {
+        this.handleSettingChange({ type: 'layout', value: 'sidemenu' })
+      }
+    },
+    isAdmin () {
+      const {
+        role,
+        roles
+      } = this
+      const relRole = roles.find(r => r.roleId === role)
+      return relRole.roleName === '管理员'
     }
   }
 }
