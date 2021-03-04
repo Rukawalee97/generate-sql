@@ -61,7 +61,7 @@
 
 <script>
 import { message } from 'ant-design-vue'
-  import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { isEmpty } from '@/utils/util'
 
   export default {

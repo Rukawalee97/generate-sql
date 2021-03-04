@@ -50,7 +50,7 @@ export const asyncRouterMap = [
           {
             path: '/study/mysql',
             name: 'mysql',
-            // component: () => import(''),
+            component: () => import('@/views/study/Article'),
             meta: {
               title: 'MySQL',
               keepAlive: false
@@ -59,7 +59,7 @@ export const asyncRouterMap = [
           {
             path: '/study/mybatis',
             name: 'mybatis',
-            // component: () => import(''),
+            component: () => import('@/views/study/Article'),
             meta: {
               title: 'MyBatis',
               keepAlive: false
