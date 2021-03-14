@@ -3,15 +3,15 @@ package com.rukawa.generate.sql.service;
 import com.rukawa.common.util.BeanUtil;
 import com.rukawa.common.util.FileUtil;
 import com.rukawa.common.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
+@Slf4j
 @Service
 public class FileService {
 
@@ -43,7 +43,32 @@ public class FileService {
                 return File.separator + relFile.replace(serverPath + File.separator, "");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("#uploadFile(file) occur: ", e);
+        }
+        return "";
+    }
+
+    public String transferFile(InputStream inputStream, String fileSuffix) {
+        String relFileName = StringUtil.generateUniqueCode() + "." + fileSuffix;
+        String relFile = serverPath + File.separator + getImageLocation() + File.separator + relFileName;
+        byte[] buff = new byte[2048];
+        try (OutputStream outputStream = new FileOutputStream(relFile)) {
+            int len = -1;
+            while ((len = inputStream.read(buff)) != -1) {
+                outputStream.write(buff, 0, len);
+            }
+            outputStream.flush();
+            return relFileName;
+        } catch (IOException e) {
+            log.error("#transferFile(inputStream, fileSuffix) occur: ", e);
+        } finally {
+            if (!BeanUtil.isEmpty(inputStream)) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    log.error("#transferFile(inputStream, fileSuffix) occur: ", e);
+                }
+            }
         }
         return "";
     }

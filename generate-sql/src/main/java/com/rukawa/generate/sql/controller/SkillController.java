@@ -63,13 +63,11 @@ public class SkillController {
         return Result.success(skillService.querySkills(skill));
     }
 
-    @GetMapping("/skill/topic/{skillType}/{pageNum}")
-    public Result querySkillTopics(@PathVariable String skillType, @PathVariable Integer pageNum) {
+    @GetMapping("/skill/topic/{skillType}")
+    public Result querySkillTopics(@PathVariable String skillType) {
         Skill skill = new Skill();
         skill.setSkillType(skillType);
-        Page page = new Page();
-        page.setPageNum(pageNum);
-        return Result.success(skillService.querySkillTopics(skill, page));
+        return Result.success(skillService.querySkillTopics(skill));
     }
 
 }

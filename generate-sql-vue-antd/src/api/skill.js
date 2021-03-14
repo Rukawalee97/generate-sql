@@ -23,8 +23,8 @@ export function deleteSkill (param) {
     })
 }
 
-export function getSkillTopics (params) {
-    return request(skillApi.QuerySkillTopics.concat('/').concat(params.skillType).concat('/').concat(params.pageNum))
+export function getSkillTopics (param) {
+    return request(skillApi.QuerySkillTopics.concat('/').concat(param))
 }
 
 export function getSkill (param) {

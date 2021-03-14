@@ -1,74 +1,63 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
-    <a-layout-sider width="200" style="background: #fff">
-      <a-menu
-        mode="inline"
-        :style="{ height: '100%' }"
-        :default-open-keys="['sub1']"
-      >
-        <!-- :default-selected-keys="['1']"
-        :default-open-keys="['sub1']"
-        :style="{ height: '100%', borderRight: 0 }" -->
-        <a-sub-menu key="sub1">
-          <span slot="title">
-            <a-icon type="align-left" />
-            章节
-          </span>
-          <a-menu-item key="1">
-            option1
-          </a-menu-item>
-          <a-menu-item key="2">
-            option2
-          </a-menu-item>
-          <a-menu-item key="3">
-            option3
-          </a-menu-item>
-          <a-menu-item key="4">
-            option4
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <span slot="title"><a-icon type="laptop" />subnav 2</span>
-          <a-menu-item key="5">
-            option5
-          </a-menu-item>
-          <a-menu-item key="6">
-            option6
-          </a-menu-item>
-          <a-menu-item key="7">
-            option7
-          </a-menu-item>
-          <a-menu-item key="8">
-            option8
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub3">
-          <span slot="title"><a-icon type="notification" />subnav 3</span>
-          <a-menu-item key="9">
-            option9
-          </a-menu-item>
-          <a-menu-item key="10">
-            option10
-          </a-menu-item>
-          <a-menu-item key="11">
-            option11
-          </a-menu-item>
-          <a-menu-item key="12">
-            option12
-          </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </a-layout-sider>
+  <div>
     <a-layout
-      style="padding: 1px"
+      id="components-layout-demo-top-side-2"
+      style="height: window.innerHeight"
+      v-if="skills.length !== 0"
     >
-      <a-layout-content
-        :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+      <a-layout-sider
+        width="160"
+        :style="{
+          background: '#fff',
+          height: contentHeight,
+          'overflow-y': 'auto'
+        }"
       >
-        Content
-      </a-layout-content>
+        <a-menu
+          mode="inline"
+          :selected-keys="[skill.skillId]"
+        >
+          <a-menu-item
+            v-for="skill in skills"
+            :key="skill.skillId"
+            :title="skill.skillTopic"
+            @click="() => getSkill(skill)"
+          >
+            {{ skill.skillTopic }}
+          </a-menu-item>
+        </a-menu>
+      </a-layout-sider>
+      <a-layout
+        style="padding: 1px"
+      >
+        <a-layout>
+          <a-layout-header
+            class="topic-content-header"
+          >
+            {{ skill.skillTopic }}
+          </a-layout-header>
+          <a-layout-content
+            :style="{
+              background: '#fff',
+              padding: '24px',
+              margin: 0,
+              minHeight: '280px',
+              'overflow-y': 'auto'
+            }"
+          >
+            <span v-html="skill.skillContent" />
+          </a-layout-content>
+        </a-layout>
+        <a-layout-sider
+          class="skill-comment"
+          width="300"
+        >
+          Sider
+        </a-layout-sider>
+      </a-layout>
     </a-layout>
-  </a-layout>
+    <a-empty v-else />
+  </div>
 </template>
 
 <script>
@@ -77,7 +66,7 @@ import { mapActions, mapGetters } from 'vuex'
   export default {
     data () {
       return {
-        pageNum: 1
+        contentHeight: window.innerHeight - 64 + 'px'
       }
     },
     computed: {
@@ -90,23 +79,37 @@ import { mapActions, mapGetters } from 'vuex'
         skillType = skillType.substring(skillType.lastIndexOf('/') + 1)
         return skillType
       },
-      getSearchParams () {
-        return {
-          pageNum: this.pageNum,
-          skillType: this.getSkillType()
+      getSkill (skill) {
+        if (skill) {
+          this.GetSkill(skill.skillId)
         }
+      },
+      windowResize () {
+        this.contentHeight = window.innerHeight - 64 + 'px'
       }
     },
     watch: {
       $route () {
-        this.GetSkillTopics(this.getSearchParams())
+        this.GetSkillTopics(this.getSkillType())
+        .then(() => this.getSkill(this.skill))
       }
     },
     mounted () {
-      this.GetSkillTopics(this.getSearchParams())
+      this.GetSkillTopics(this.getSkillType())
+      .then(() => this.getSkill(this.skill))
     }
   }
 </script>
 
 <style lang="less" scoped>
+.topic-content-header {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: .8;
+}
+.skill-comment {
+  background: #fff;
+  box-shadow: inset 1px 2px 2px #888888;
+}
 </style>

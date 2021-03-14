@@ -14,7 +14,8 @@ const getters = {
   roleManages: state => state.user.roleManages,
   roles: state => state.role.roles,
   role: state => state.user.role,
-  skills: state => state.skill.skills
+  skills: state => state.skill.skills,
+  skill: state => state.skill.skill
 }
 
 export default getters

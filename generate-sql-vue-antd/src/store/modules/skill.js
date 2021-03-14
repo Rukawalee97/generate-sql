@@ -31,11 +31,15 @@ const skill = {
                 .catch(error => reject(error))
             })
         },
-        GetSkillTopics ({ commit }, searchParams) {
+        GetSkillTopics ({ commit }, skillType) {
             return new Promise((resolve, reject) => {
-                getSkillTopics(searchParams)
+                getSkillTopics(skillType)
                 .then(response => {
-                    commit('SET_SKILLS', response.result)
+                    const skills = response.result
+                    commit('SET_SKILLS', skills)
+                    if (skills.length > 0) {
+                        commit('SET_SKILL', skills[0])
+                    }
                     resolve(response)
                 })
                 .catch(error => reject(error))
@@ -45,7 +49,7 @@ const skill = {
             return new Promise((resolve, reject) => {
                 getSkill(skillId)
                 .then(response => {
-                    commit('SET_SKILL', response)
+                    commit('SET_SKILL', response.result)
                     resolve(response)
                 })
                 .catch(error => reject(error))
