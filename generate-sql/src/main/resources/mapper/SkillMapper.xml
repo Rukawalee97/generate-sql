@@ -27,7 +27,18 @@
         <include refid="baseSql"/>
         FROM tb_skill
         <where>
-            <if test="skillId != null">skill_id = #{skillId}</if>
+            <if test="skillTopic != null">AND skill_topic = #{skillTopic}</if>
+            <if test="skillContent != null">AND skill_content = #{skillContent}</if>
+            <if test="simpleSkillContent != null">AND simple_skill_content = #{simpleSkillContent}</if>
+            <if test="skillType != null">AND skill_type = #{skillType}</if>
+        </where>
+    </select>
+
+    <select id="selectSkillTopics" resultMap="baseResultMap">
+        SELECT
+        skill_id, skill_topic
+        FROM tb_skill
+        <where>
             <if test="skillTopic != null">AND skill_topic = #{skillTopic}</if>
             <if test="skillContent != null">AND skill_content = #{skillContent}</if>
             <if test="simpleSkillContent != null">AND simple_skill_content = #{simpleSkillContent}</if>

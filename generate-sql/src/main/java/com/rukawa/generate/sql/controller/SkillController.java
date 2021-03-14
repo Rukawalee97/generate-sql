@@ -1,5 +1,6 @@
 package com.rukawa.generate.sql.controller;
 
+import com.rukawa.generate.sql.domain.Page;
 import com.rukawa.generate.sql.domain.Skill;
 import com.rukawa.generate.sql.dto.Result;
 import com.rukawa.generate.sql.service.SkillService;
@@ -50,11 +51,25 @@ public class SkillController {
         return result;
     }
 
+    @GetMapping("/skill/{skillId}")
+    public Result querySkill(@PathVariable Integer skillId) {
+        return Result.success(skillService.querySkillByPrimaryKey(skillId));
+    }
+
     @GetMapping("/skills/{skillType}")
     public Result querySkills(@PathVariable String skillType) {
         Skill skill = new Skill();
         skill.setSkillType(skillType);
         return Result.success(skillService.querySkills(skill));
+    }
+
+    @GetMapping("/skill/topic/{skillType}/{pageNum}")
+    public Result querySkillTopics(@PathVariable String skillType, @PathVariable Integer pageNum) {
+        Skill skill = new Skill();
+        skill.setSkillType(skillType);
+        Page page = new Page();
+        page.setPageNum(pageNum);
+        return Result.success(skillService.querySkillTopics(skill, page));
     }
 
 }

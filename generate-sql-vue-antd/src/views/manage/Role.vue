@@ -123,7 +123,9 @@ import { isEmpty } from '@/utils/util'
         if (isEmpty(this.token)) {
           message.warning('您还没有登录！')
           this.$router.push({ path: '/' })
+          return false
         }
+        return true
       },
       isAdmin () {
         const {
@@ -134,13 +136,15 @@ import { isEmpty } from '@/utils/util'
         if (relRole.roleName !== '管理员') {
           message.warning('您没有访问权限！')
           this.$router.push({ path: '/' })
+          return false
         }
+        return true
       }
     },
     mounted () {
-      this.GetManages()
-      this.isLoged()
-      this.isAdmin()
+      if (this.isLoged() && this.isAdmin()) {
+        this.GetManages()
+      }
     },
     data () {
       return {

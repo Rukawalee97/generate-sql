@@ -1,12 +1,16 @@
-import { updateSkill, getSkills, deleteSkill } from '@/api/skill'
+import { updateSkill, getSkills, deleteSkill, getSkillTopics, getSkill } from '@/api/skill'
 
 const skill = {
     state: {
-        skills: []
+        skills: [],
+        skill: undefined
     },
     mutations: {
         SET_SKILLS: (state, skills) => {
             state.skills = skills
+        },
+        SET_SKILL: (state, skill) => {
+            state.skill = skill
         }
     },
     actions: {
@@ -22,6 +26,26 @@ const skill = {
                 getSkills(skillType)
                 .then(response => {
                     commit('SET_SKILLS', response.result)
+                    resolve(response)
+                })
+                .catch(error => reject(error))
+            })
+        },
+        GetSkillTopics ({ commit }, searchParams) {
+            return new Promise((resolve, reject) => {
+                getSkillTopics(searchParams)
+                .then(response => {
+                    commit('SET_SKILLS', response.result)
+                    resolve(response)
+                })
+                .catch(error => reject(error))
+            })
+        },
+        GetSkill ({ commit }, skillId) {
+            return new Promise((resolve, reject) => {
+                getSkill(skillId)
+                .then(response => {
+                    commit('SET_SKILL', response)
                     resolve(response)
                 })
                 .catch(error => reject(error))

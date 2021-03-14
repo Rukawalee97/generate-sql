@@ -10,6 +10,8 @@ public interface SkillMapper {
 
     List<Skill> selectSkills(Skill skill);
 
+    List<Skill> selectSkillTopics(Skill skill);
+
     int updateSkillByPrimaryKey(Skill skill);
 
     Skill selectSkillByPrimary(Integer skillId);
