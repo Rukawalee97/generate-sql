@@ -1,6 +1,5 @@
 package com.rukawa.generate.sql.controller;
 
-import com.rukawa.generate.sql.domain.Page;
 import com.rukawa.generate.sql.domain.Skill;
 import com.rukawa.generate.sql.dto.Result;
 import com.rukawa.generate.sql.service.SkillService;

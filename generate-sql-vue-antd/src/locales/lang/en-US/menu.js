@@ -41,5 +41,6 @@ export default {
     'menu.manage': 'Manage Center',
     'menu.manage.role': 'Role Manage',
     'menu.manage.mysql': 'MySQL Manage',
-    'menu.manage.mybatis': 'MyBatis Manage'
+    'menu.manage.mybatis': 'MyBatis Manage',
+    'menu.druid.monitor': 'Data Monitor'
 }

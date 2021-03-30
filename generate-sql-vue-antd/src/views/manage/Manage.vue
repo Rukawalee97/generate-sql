@@ -144,7 +144,7 @@ import { isEmpty } from '@/utils/util'
         editorValue: undefined,
         columns: [
           {
-            title: '编号',
+            title: '序号',
             dataIndex: 'no',
             width: '60px',
             scopedSlots: {
@@ -236,6 +236,7 @@ import { isEmpty } from '@/utils/util'
         const validateFieldsKey = ['skillId', 'skillTopic', 'skillContent', 'simpleSkillContent']
         validateFields(validateFieldsKey, { force: true }, (err, values) => {
           if (!err) {
+            console.log(values)
             const params = {
               ...values,
               skillType: this.getSkillType()

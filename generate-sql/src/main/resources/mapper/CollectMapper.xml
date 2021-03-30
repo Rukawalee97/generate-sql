@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rukawa.generate.sql.mapper.CollectMapper">
+
+    <resultMap id="baseResultMap" type="com.rukawa.generate.sql.domain.Collect">
+        <result column="collect_id" jdbcType="INTEGER" property="collectId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="skill_id" jdbcType="INTEGER" property="skillId"/>
+        <result column="collect_time" jdbcType="DATE" property="collectTime"/>
+    </resultMap>
+
+    <resultMap id="dtoResultMap" type="com.rukawa.generate.sql.dto.CollectDto">
+        <result column="collect_id" jdbcType="INTEGER" property="collectId"/>
+        <result column="skill_id" jdbcType="INTEGER" property="skillId"/>
+        <result column="skill_topic" jdbcType="VARCHAR" property="skillTopic"/>
+        <result column="collect_time" jdbcType="DATE" property="collectTime"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        collect_id
+        , user_id, skill_id, collect_time
+    </sql>
+
+    <sql id="dtoSql">
+        collect_id
+        , collect.skill_id, skill_topic, collect_time
+    </sql>
+
+    <select id="selectCollects" resultMap="dtoResultMap">
+        SELECT
+        <include refid="dtoSql"/>
+        FROM tb_collect collect
+        JOIN tb_skill skill
+        ON skill.skill_id = collect.skill_id
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="skillId != null">AND collect.skill_id = #{skillId}</if>
+        </where>
+    </select>
+
+    <delete id="deleteCollectByPrimaryKey">
+        DELETE
+        FROM tb_collect
+        WHERE collect_id = #{collectId}
+    </delete>
+
+    <update id="updateCollect">
+        UPDATE tb_collect
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="skillId != null">skill_id = #{skillId},</if>
+            <if test="collectTime != null">collect_time = #{collectTime},</if>
+        </set>
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="skillId != null">AND skill_id = #{skillId}</if>
+        </where>
+    </update>
+
+    <insert id="insertCollect">
+        INSERT INTO tb_collect
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="collectId != null">collect_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="skillId != null">skill_id,</if>
+            <if test="collectTime != null">collect_time</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="collectId != null">#{collectId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="skillId != null">#{skillId},</if>
+            <if test="collectTime != null">#{collectTime}</if>
+        </trim>
+    </insert>
+
+</mapper>

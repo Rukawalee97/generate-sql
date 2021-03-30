@@ -2,8 +2,27 @@
 
 html,
 body,
-#app, #root {
+#app,
+#root {
   height: 100%;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, .1);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, .25);
+  transition: color .2s ease;
 }
 
 .colorWeak {
@@ -38,6 +57,7 @@ ol {
 .table-alert {
   margin-bottom: 16px;
 }
+
 // 数据列表 操作
 .table-operator {
   margin-bottom: 18px;
@@ -46,6 +66,7 @@ ol {
     margin-right: 8px;
   }
 }
+
 // 数据列表 搜索条件
 .table-page-search-wrapper {
 
@@ -61,11 +82,12 @@ ol {
         vertical-align: middle;
       }
 
-      > .ant-form-item-label {
+      >.ant-form-item-label {
         line-height: 32px;
         padding-right: 8px;
         width: auto;
       }
+
       .ant-form-item-control {
         height: 32px;
         line-height: 32px;
@@ -84,12 +106,15 @@ ol {
   .ant-table {
     width: 100%;
     overflow-x: auto;
-    &-thead > tr,
-    &-tbody > tr {
-      > th,
-      > td {
+
+    &-thead>tr,
+    &-tbody>tr {
+
+      >th,
+      >td {
         white-space: pre;
-        > span {
+
+        >span {
           display: block;
         }
       }

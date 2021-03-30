@@ -112,7 +112,12 @@ const vueConfig = {
       },
       '/images': {
         target: 'http://localhost:8080',
-        ws:false,
+        ws: false,
+        changeOrigin: true
+      },
+      '/tinymce': {
+        target: 'http://localhost:8080',
+        ws: false,
         changeOrigin: true
       }
     }

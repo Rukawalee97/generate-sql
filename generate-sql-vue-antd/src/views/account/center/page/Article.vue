@@ -1,69 +1,134 @@
 <template>
-  <a-list
-    size="large"
-    rowKey="id"
-    :loading="loading"
-    itemLayout="vertical"
-    :dataSource="data"
-  >
-    <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
-      <template slot="actions">
-        <icon-text type="star-o" :text="item.star" />
-        <icon-text type="like-o" :text="item.like" />
-        <icon-text type="message" :text="item.message" />
-      </template>
-      <a-list-item-meta>
-        <a slot="title" href="https://vue.ant.design/">{{ item.title }}</a>
-        <template slot="description">
-          <span>
-            <a-tag>Ant Design</a-tag>
-            <a-tag>设计语言</a-tag>
-            <a-tag>蚂蚁金服</a-tag>
-          </span>
-        </template>
-      </a-list-item-meta>
-      <article-list-content :description="item.description" :owner="item.owner" :avatar="item.avatar" :href="item.href" :updateAt="item.updatedAt" />
-    </a-list-item>
-    <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
-      <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
-    </div>
-  </a-list>
+  <div>
+    <a-table
+      :columns="columns"
+      :data-source="collects"
+    >
+      <span slot="no" slot-scope="_, __, index">
+        {{ index + 1 }}
+      </span>
+      <span
+        slot="operation"
+        slot-scope="text, record"
+      >
+        <a-button
+          shape="round"
+          type="primary"
+          size="small"
+          @click="() => getSkill(record)"
+        >
+          查看
+        </a-button>
+        <a-divider
+          type="vertical"
+        />
+        <a-button
+          shape="round"
+          size="small"
+          gost
+          @click="() => updateCollect(record.collectId)"
+        >
+          取消
+        </a-button>
+      </span>
+    </a-table>
+    <a-modal
+      :title="skill.skillTopic"
+      :visible="skillModalVisible"
+      :maskClosable="false"
+      :width="skillModalWidth"
+      @cancel="() => showSkillModal(false)"
+      @ok="() => showSkillModal(false)"
+    >
+      <span
+        v-html="skill.skillContent"
+      />
+    </a-modal>
+  </div>
 </template>
 
 <script>
-import { ArticleListContent } from '@/components'
-import IconText from '@/views/list/search/components/IconText'
+import { message } from 'ant-design-vue'
+import { mapActions, mapGetters } from 'vuex'
+
+const columns = [
+  {
+    title: '序号',
+    dataIndex: 'no',
+    width: '60px',
+    key: 'no',
+    scopedSlots: {
+      customRender: 'no'
+    }
+  },
+  {
+    title: '知识点',
+    dataIndex: 'skillTopic',
+    key: 'skillTopic'
+  },
+  {
+    title: '收藏时间',
+    dataIndex: 'collectTime',
+    key: 'collectTime'
+  },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    key: 'operation',
+    width: '180px',
+    scopedSlots: {
+      customRender: 'operation'
+    }
+  }
+]
 
 export default {
   name: 'Article',
-  components: {
-    IconText,
-    ArticleListContent
-  },
   data () {
     return {
-      loading: true,
-      loadingMore: false,
-      data: []
+      columns,
+      skillModalVisible: false,
+      skillModalWidth: window.innerWidth * 0.6
     }
   },
+  computed: {
+    ...mapGetters([
+      'collects',
+      'skill'
+    ])
+  },
   mounted () {
-    this.getList()
+    this.GetCollects()
   },
   methods: {
-    getList () {
-      this.$http.get('/list/article').then(res => {
-        console.log('res', res)
-        this.data = res.result
-        this.loading = false
+    ...mapActions(['GetCollects', 'DeleteCollect', 'GetSkill']),
+    updateCollect (collectId) {
+      this.DeleteCollect(collectId)
+      .then(response => {
+        if (!response.result) {
+          this.requestFailed(response)
+        } else {
+          message.success('取消收藏成功！')
+          this.GetCollects()
+        }
       })
+      .catch(error => this.requestFailed(error))
     },
-    loadMore () {
-      this.loadingMore = true
-      this.$http.get('/list/article').then(res => {
-        this.data = this.data.concat(res.result)
-      }).finally(() => {
-        this.loadingMore = false
+    getSkill (skill) {
+      if (skill) {
+        this.GetSkill(skill.skillId)
+        this.showSkillModal(true)
+      }
+    },
+    showSkillModal (visible) {
+      this.skillModalVisible = visible
+    },
+    requestFailed (err) {
+      this.isLoginError = true
+      this.$notification['error']({
+        message: '发生错误',
+        description: err.message || ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        duration: 4
       })
     }
   }

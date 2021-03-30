@@ -12,8 +12,10 @@
     <ads v-if="isProPreviewSite && !collapsed"/>
     <template v-slot:menuHeaderRender>
       <div>
-        <logo-svg />
-        <h1>{{ title }}</h1>
+        <a href="/">
+          <logo-svg />
+          <h1>{{ title }}</h1>
+        </a>
       </div>
     </template>
 

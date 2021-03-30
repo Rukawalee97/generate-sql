@@ -7,7 +7,8 @@
       @blur="onEditorBlur($event)"
       @focus="onEditorFocus($event)"
       @ready="onEditorReady($event)"
-      @change="onEditorChange($event)">
+      @change="onEditorChange($event)"
+    >
     </quill-editor>
 
   </div>
@@ -38,7 +39,8 @@ export default {
     editorPlaceholder: {
       type: String,
       default: 'Input text hear...'
-    }
+    },
+    toolbars: undefined
   },
   data () {
     return {
@@ -46,7 +48,7 @@ export default {
       editorOption: {
         // some quill options
         modules: {
-          toolbar: [
+          toolbar: this.toolbars || [
             [{ 'size': [] }],
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block', { 'script': 'sub' }, { 'script': 'super' }],

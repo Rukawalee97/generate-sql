@@ -5,7 +5,10 @@
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
             <div class="avatar">
-              <img :src="avatar">
+              <img
+                :src="avatar"
+                @mouseup="() => clickImage(avatar)"
+              >
             </div>
             <div class="username">{{ nickname }}</div>
             <div class="bio">{{ userIntroduction }}</div>
@@ -86,12 +89,22 @@
           :activeTabKey="noTitleKey"
           @tabChange="key => handleTabChange(key, 'noTitleKey')"
         >
-          <article-page v-if="noTitleKey === 'article'"></article-page>
-          <app-page v-else-if="noTitleKey === 'app'"></app-page>
+          <app-page v-if="noTitleKey === 'app'"></app-page>
+          <article-page v-else-if="noTitleKey === 'article'"></article-page>
           <project-page v-else-if="noTitleKey === 'project'"></project-page>
         </a-card>
       </a-col>
     </a-row>
+    <a-modal
+      :visible="previewVisible"
+      :footer="null"
+      @cancel="handleCancel"
+    >
+      <img
+        style="width: 100%"
+        :src="previewImage"
+      />
+    </a-modal>
   </div>
 </template>
 
@@ -115,6 +128,8 @@ export default {
   },
   data () {
     return {
+      previewImage: '',
+      previewVisible: false,
       tags: ['Java', 'MySQL', 'Vue', 'Antd'],
       colors: ['#e16512', '#005a85', '#3fbc88', '#40a9ff'],
       teams: [
@@ -136,16 +151,16 @@ export default {
       ],
       tabListNoTitle: [
         {
-          key: 'article',
-          tab: '文章(8)'
+          key: 'app',
+          tab: '引 用'
         },
         {
-          key: 'app',
-          tab: '应用(8)'
+          key: 'article',
+          tab: '收 藏'
         },
         {
           key: 'project',
-          tab: '项目(8)'
+          tab: '评 论'
         }
       ],
       noTitleKey: 'app'
@@ -158,10 +173,16 @@ export default {
     this.isLoged()
   },
   methods: {
+    clickImage (avatar) {
+      this.previewImage = avatar
+      this.previewVisible = true
+    },
+    handleCancel () {
+      this.previewVisible = false
+    },
     handleTabChange (key, type) {
       this[type] = key
     },
-
     handleTagClose (removeTag) {
       const tags = this.tags.filter(tag => tag !== removeTag)
       this.tags = tags

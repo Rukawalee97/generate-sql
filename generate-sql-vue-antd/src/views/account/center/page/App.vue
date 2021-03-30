@@ -2,52 +2,23 @@
   <div class="app-list">
     <a-list
       :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }"
-      :dataSource="dataSource">
+      :dataSource="dataSource"
+    >
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card :hoverable="true">
           <a-card-meta>
             <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
             <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="small"/>
-            <div class="meta-cardInfo" slot="description">
-              <div>
-                <p>活跃用户</p>
-                <p>
-                  <span>{{ item.activeUser }}<span>万</span></span>
-                </p>
-              </div>
-              <div>
-                <p>新增用户</p>
-                <p>{{ item.newUser | NumberFormat }}</p>
-              </div>
+            <div class="meta-cardInfo" slot="description" :title="item.desc">
+              {{ item.desc }}
             </div>
           </a-card-meta>
           <template class="ant-card-actions" slot="actions">
-            <a>
-              <a-icon type="download"/>
+            <a v-if="item.codeSrc" :href="item.codeSrc" target="_blank" title="源代码">
+              Source <a-icon type="link"/>
             </a>
-            <a>
-              <a-icon type="edit"/>
-            </a>
-            <a>
-              <a-icon type="share-alt"/>
-            </a>
-            <a>
-              <a-dropdown>
-                <a class="ant-dropdown-link" href="javascript:;">
-                  <a-icon type="ellipsis"/>
-                </a>
-                <a-menu slot="overlay">
-                  <a-menu-item>
-                    <a href="javascript:;">1st menu item</a>
-                  </a-menu-item>
-                  <a-menu-item>
-                    <a href="javascript:;">2nd menu item</a>
-                  </a-menu-item>
-                  <a-menu-item>
-                    <a href="javascript:;">3rd menu item</a>
-                  </a-menu-item>
-                </a-menu>
-              </a-dropdown>
+            <a :href="item.binSrc" target="_blank" title="二进制文件">
+              Binary <a-icon type="link" />
             </a>
           </template>
         </a-card>
@@ -58,15 +29,66 @@
 </template>
 
 <script>
-const dataSource = []
-for (let i = 0; i < 11; i++) {
-  dataSource.push({
-    title: 'Alipay',
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-    activeUser: 17,
-    newUser: 1700
-  })
-}
+import java from '@/assets/java.png'
+import github from '@/assets/github.png'
+import springboot from '@/assets/springboot.png'
+import antdPro from '@/assets/antd_pro.png'
+import antd from '@/assets/antd.svg'
+import mybatis from '@/assets/mybatis.png'
+import quill from '@/assets/quill.svg'
+
+const dataSource = [
+  {
+    title: 'SQLBuilder',
+    avatar: github,
+    desc: 'SQL快速生成器',
+    codeSrc: 'https://github.com/Rukawalee/SQLBuilder',
+    binSrc: 'https://gitee.com/rukawalee/mvn/tree/master/repo/com/rukawa/SQL'
+  },
+  {
+    title: 'SpringBoot',
+    avatar: springboot,
+    desc: '一套企业级快速开发框架',
+    binSrc: 'https://spring.io/projects/spring-boot'
+  },
+  {
+    title: 'Antd Pro Vue',
+    avatar: antdPro,
+    desc: '开箱即用的中台前端/设计解决方案',
+    binSrc: 'https://pro.antdv.com/'
+  },
+  {
+    title: 'CommonUtil',
+    avatar: github,
+    desc: '公共工具类',
+    codeSrc: 'https://github.com/Rukawalee/CommonUtil',
+    binSrc: 'https://gitee.com/rukawalee/mvn/tree/master/repo/com/rukawa/CommonUtil'
+  },
+  {
+    title: 'MyBatis',
+    avatar: mybatis,
+    desc: '一款优秀的持久层框架',
+    binSrc: 'https://mybatis.org/mybatis-3/'
+  },
+  {
+    title: 'Antd Vue',
+    avatar: antd,
+    desc: '开箱即用的高质量 Vue 组件',
+    binSrc: 'https://www.antdv.com/docs/vue/introduce-cn/'
+  },
+  {
+    title: 'Quill Editor',
+    avatar: quill,
+    desc: 'Your powerful rich text editor.',
+    binSrc: 'https://quilljs.com/'
+  },
+  {
+    title: 'Druid',
+    avatar: java,
+    desc: '为监控而生的数据库连接池',
+    binSrc: 'https://github.com/alibaba/druid'
+  }
+]
 
 export default {
   name: 'Article',

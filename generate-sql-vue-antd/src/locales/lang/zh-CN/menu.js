@@ -41,5 +41,6 @@ export default {
     'menu.manage': '管理中心',
     'menu.manage.role': '角色管理',
     'menu.manage.mysql': 'MySQL管理',
-    'menu.manage.mybatis': 'MyBatis管理'
+    'menu.manage.mybatis': 'MyBatis管理',
+    'menu.druid.monitor': '数据监控'
 }

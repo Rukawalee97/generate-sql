@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rukawa.generate.sql.mapper.CommentMapper">
+
+    <resultMap id="baseResultMap" type="com.rukawa.generate.sql.domain.Comment">
+        <result column="comment_id" jdbcType="INTEGER" property="commentId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="skill_id" jdbcType="INTEGER" property="skillId"/>
+        <result column="comment_content" jdbcType="VARCHAR" property="commentContent"/>
+        <result column="comment_time" jdbcType="DATE" property="commentTime"/>
+    </resultMap>
+
+    <resultMap id="dtoResultMap" type="com.rukawa.generate.sql.dto.CommentDto">
+        <result column="user_head" jdbcType="VARCHAR" property="userHead"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="comment_content" jdbcType="VARCHAR" property="commentContent"/>
+        <result column="comment_time" jdbcType="DATE" property="commentTime"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        comment_id
+        , user_id, skill_id, comment_content, comment_time
+    </sql>
+
+    <sql id="dtoSql">
+        user_head
+        , username, comment_content, comment_time
+    </sql>
+
+    <select id="selectComments" resultMap="dtoResultMap">
+        SELECT
+        <include refid="dtoSql"/>
+        FROM tb_comment comment
+        JOIN tb_user user ON user.user_id = comment.user_id
+        JOIN tb_skill skill ON skill.skill_id = comment.skill_id
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="skillId != null">AND comment.skill_id = #{skillId}</if>
+        </where>
+    </select>
+
+    <insert id="insertComment">
+        INSERT INTO tb_comment
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="commentId != null">comment_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="skillId != null">skill_id,</if>
+            <if test="commentContent != null">comment_content,</if>
+            <if test="commentTime != null">comment_time</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides="," suffixOverrides=",">
+            <if test="commentId != null">#{commentId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="skillId != null">#{skillId},</if>
+            <if test="commentContent != null">#{commentContent},</if>
+            <if test="commentTime != null">#{commentTime}</if>
+        </trim>
+    </insert>
+
+</mapper>
