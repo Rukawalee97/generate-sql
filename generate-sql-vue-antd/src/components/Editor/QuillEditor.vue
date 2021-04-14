@@ -18,6 +18,8 @@
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import 'highlight.js/styles/xcode.css'
+import hljs from 'highlight.js'
 
 import { quillEditor } from 'vue-quill-editor'
 
@@ -40,11 +42,19 @@ export default {
       type: String,
       default: 'Input text hear...'
     },
-    toolbars: undefined
+    toolbars: undefined,
+    readOnly: {
+      type: Boolean,
+      default: true
+    },
+    theme: {
+      type: String,
+      default: 'snow'
+    }
   },
   data () {
     return {
-      content: null,
+      content: this.value,
       editorOption: {
         // some quill options
         modules: {
@@ -55,10 +65,16 @@ export default {
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
             [{ 'color': [] }, { 'background': [] }],
             ['link', 'image']
-          ]
+          ],
+          syntax: {
+            highlight: text => {
+              return hljs.highlightAuto(text).value
+            }
+          }
         },
+        readOnly: this.readOnly,
         placeholder: this.editorPlaceholder,
-        theme: 'snow'
+        theme: this.theme
       }
     }
   },
@@ -74,7 +90,10 @@ export default {
     },
     onEditorChange ({ quill, html, text }) {
       // console.log('editor change!', quill, html, text)
-      this.$emit('change', html)
+      const {
+        $emit
+      } = this
+      $emit('change', html)
     }
   },
   watch: {

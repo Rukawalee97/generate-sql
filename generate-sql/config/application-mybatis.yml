@@ -2,5 +2,5 @@
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.rukawa.gernerate.sql.domain
-#  configuration:
+#  SQLBuilderConfiguration:
 #    map-underscore-to-camel-case: true

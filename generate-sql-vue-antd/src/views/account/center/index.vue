@@ -157,11 +157,12 @@ export default {
         {
           key: 'article',
           tab: '收 藏'
-        },
-        {
-          key: 'project',
-          tab: '评 论'
         }
+        // ,
+        // {
+        //   key: 'project',
+        //   tab: '评 论'
+        // }
       ],
       noTitleKey: 'app'
     }

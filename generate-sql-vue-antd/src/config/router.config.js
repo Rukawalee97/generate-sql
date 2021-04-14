@@ -58,7 +58,7 @@ export const asyncRouterMap = [
       {
         path: '/generate',
         name: 'generate',
-        component: RouteView,
+        component: () => import('@/views/generate/Generate'),
         meta: {
           title: 'menu.generate',
           keepAlive: true,

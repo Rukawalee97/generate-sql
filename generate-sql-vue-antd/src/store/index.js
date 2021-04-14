@@ -7,6 +7,7 @@ import role from './modules/role'
 import skill from './modules/skill'
 import collect from './modules/collect'
 import comment from './modules/comment'
+import generate from './modules/generate'
 
 // default router permission control
 import permission from './modules/permission'
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     collect,
     skill,
     comment,
+    generate,
     permission
   },
   state: {

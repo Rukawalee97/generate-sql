@@ -1,0 +1,5 @@
+sql:
+  properties:
+    sqlBuilderClassName: com.rukawa.sql.interfaces.impl.MySQLBuilder
+    sqlBuilderExecutorClassName: java.sql.Driver
+    camelCase: true

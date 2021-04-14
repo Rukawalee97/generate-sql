@@ -17,7 +17,8 @@ const getters = {
   skills: state => state.skill.skills,
   skill: state => state.skill.skill,
   collects: state => state.collect.collects,
-  comments: state => state.comment.comments
+  comments: state => state.comment.comments,
+  sqlMap: state => state.generate.sqlMap
 }
 
 export default getters

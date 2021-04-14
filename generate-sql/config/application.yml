@@ -4,6 +4,7 @@ spring:
     include:
       - database
       - mybatis
+      - sql-configuration
 
 # 日志配置
 logging:

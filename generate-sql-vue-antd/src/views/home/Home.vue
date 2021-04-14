@@ -6,38 +6,36 @@
       <a-layout-content
         class="basic-layout-content"
       >
-        <a-row>
+        <a-row
+          type="flex"
+          justify="center"
+        >
           <a-col
             :span="10"
-            :offset="1"
+            :offset="2"
           >
             <a-card
               class="content-center-card"
             >
-              <a-carousel arrows>
+              <a-carousel
+                arrows
+                autoplay
+              >
                 <div
-                  slot="prevArrow"
-                  class="custom-slick-arrow"
-                  style="left: 10px;zIndex: 1"
+                  :key="i"
+                  v-for="(c, i) in carouselList"
                 >
-                  <a-icon type="left-circle" />
+                  <img
+                    :src="c.imgSrc"
+                    class="carousel-img"
+                    :title="c.tip"
+                  />
                 </div>
-                <div
-                  slot="nextArrow"
-                  class="custom-slick-arrow"
-                  style="right: 10px"
-                >
-                  <a-icon type="right-circle" />
-                </div>
-                <div><h3>1</h3></div>
-                <div><h3>2</h3></div>
-                <div><h3>3</h3></div>
-                <div><h3>4</h3></div>
               </a-carousel>
             </a-card>
           </a-col>
           <a-col
-            :span="10"
+            :span="9"
             :offset="2"
           >
             <a-card
@@ -49,22 +47,22 @@
                 <a-timeline-item
                   color="blue"
                 >
-                  <h3>欢迎使用 Generate SQL 在线学习平台</h3>
+                  <h2>欢迎使用 Generate SQL 在线学习平台</h2>
                 </a-timeline-item>
                 <a-timeline-item
                   color="green"
                 >
-                  <h3>在这里学习 SQL 相关的知识点</h3>
+                  <h2>在这里学习 SQL 相关的知识点</h2>
                 </a-timeline-item>
                 <a-timeline-item
                   color="green"
                 >
-                  <h3>在这里快速生成 SQL 加深学习印象</h3>
+                  <h2>在这里快速生成 SQL 加深学习印象</h2>
                 </a-timeline-item>
                 <a-timeline-item
                   color="gray"
                 >
-                  <h3>加入我们，深入学习，成就自己</h3>
+                  <h2>加入我们，深入学习，成就自己</h2>
                 </a-timeline-item>
               </a-timeline>
             </a-card>
@@ -101,6 +99,8 @@ import github from '@/assets/github.png'
 import springboot from '@/assets/springboot.png'
 import antdPro from '@/assets/antd_pro.png'
 import mysql from '@/assets/mysql.svg'
+import main from '@/assets/main.png'
+import home from '@/assets/home.png'
 
 export default {
   data () {
@@ -130,6 +130,16 @@ export default {
           imgSrc: github,
           foot: 'GitHub',
           imgHref: 'https://www.runoob.com/git/git-tutorial.html'
+        }
+      ],
+      carouselList: [
+        {
+          imgSrc: main,
+          tip: 'Generate SQL'
+        },
+        {
+          imgSrc: home,
+          tip: 'Home Page'
         }
       ]
     }
@@ -178,5 +188,8 @@ export default {
 .footer-img:hover {
   cursor: pointer;
   background-image: linear-gradient(to top, #b3ffab 0%, #12fff7 100%);
+}
+.carousel-img {
+  width: calc(100% - 30px);
 }
 </style>
